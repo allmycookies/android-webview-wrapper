@@ -1,0 +1,28 @@
+name: Build Modern FireTV APK
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Java (JDK) 17 einrichten
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Baurechte vergeben
+        run: chmod +x gradlew
+
+      - name: APK generieren
+        run: ./gradlew assembleDebug
+
+      - name: Fertige APK hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: FireTV-PWA-App
+          path: app/build/outputs/apk/debug/*.apk
